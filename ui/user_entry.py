@@ -34,6 +34,11 @@ def handle_signup():
 
     if signup_user_button:
         if has_upper and has_lower and has_digit and has_special:
+            upper_label.grid_remove()
+            lower_label.grid_remove()
+            digit_label.grid_remove()
+            special_label.grid_remove()
+            signup_user_button.grid(column=0, row=3)
             if len(password) >= min_legnth:
                 if password == confirm_password:
                     match_label.grid_remove()
@@ -49,20 +54,12 @@ def handle_signup():
         elif not email or not password:
             messagebox.showerror("Error", "All fields are required to procced")
             return
-    else:
-        if not has_upper and not has_lower and not has_digit and has_special: 
-            upper_label.grid(column=0, row=3),
-            lower_label.grid(column=0, row=4),
-            digit_label.grid(column=0, row=5),
-            special_label.grid(column=0, row=6)
-            signup_user_button.grid(column=0, row=8)
-        else:
-            upper_label.grid_remove()
-            lower_label.grid_remove()
-            digit_label.grid_remove()
-            special_label.grid_remove()
-            signup_user_button.grid(column=0, row=3)
-
+        elif not has_upper and not has_lower and not has_digit and has_special: 
+            upper_label.grid(column=1, row=3),
+            lower_label.grid(column=1, row=4),
+            digit_label.grid(column=1, row=5),
+            special_label.grid(column=1, row=6)
+            signup_user_button.grid(column=1, row=8)
 
 #interface--------------------------------------------------------------------
 root = ttk.Window(title="PortalOne SignUp", themename="lumen")
@@ -95,22 +92,22 @@ confirm_password_entry = ttk.Entry(main_panel, show="*")
 confirm_password_entry.grid(column=1, row=2, padx=5, pady=5)
 
 upper_label = ttk.Label(main_panel, text="The password must have a uppercase character", font=("Airal", 10))
-upper_label.grid(column=0, row=3)
+upper_label.grid(column=1, row=3)
 
 lower_label = ttk.Label(main_panel, text="The password must have a lowercase character", font=("Airal", 10))
-lower_label.grid(column=0, row=4)
+lower_label.grid(column=1, row=4)
 
 digit_label = ttk.Label(main_panel, text="The password must have a digit", font=("Airal", 10))
-digit_label.grid(column=0, row=5)
+digit_label.grid(column=1, row=5)
 
 special_label = ttk.Label(main_panel, text="The password must have a uppercase", font=("Airal", 10))
-special_label.grid(column=0, row=6)
+special_label.grid(column=1, row=6)
 
 match_label = ttk.Label(main_panel, text="Passwords don't match", font=("Arial", 10))
-match_label.grid(column=0, row=7)
+match_label.grid(column=1, row=7)
 
 signup_user_button = ttk.Button(main_panel, text="Create account", command=handle_signup)
-signup_user_button.grid(column=0, row=8)
+signup_user_button.grid(column=1, row=8)
 
 handle_signup()
 
