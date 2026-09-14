@@ -29,7 +29,7 @@ def login_user(email, password):
 
 def signup_user(email, password):
     try:
-        user = auth.create_user_with_email_and_password
+        user = auth.create_user_with_email_and_password(email, password)
         return {"success": True, "user": user}
     
     except Exception as e:
