@@ -3,24 +3,6 @@ import string
 import customtkinter as ctk
 from .firebase_auth import signup_user
 
-import warnings
-import requests
-from urllib3.exceptions import InsecureRequestWarning
-
-# 1. Hide the insecure request warning messages
-warnings.simplefilter("ignore", InsecureRequestWarning)
-
-# 2. Force every single web request in the app to use verify=False
-original_request = requests.Session.request
-
-
-def patched_request(self, *args, **kwargs):
-    kwargs["verify"] = False  # Tells the library to ignore the school certificate
-    return original_request(self, *args, **kwargs)
-
-
-requests.Session.request = patched_request
-
 def create_signup_page(parent, router):
 #interface--------------------------------------------------------------------
     signup_card = ctk.CTkFrame(parent, width=400, height=500)

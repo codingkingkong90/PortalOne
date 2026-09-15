@@ -14,5 +14,9 @@ def create_reset_page(parent, router):
     reset_input_container.grid(row=0, column=0)
 
 #reset_input_container--------------------------------------------------------
-    login_email_entry = ctk.CTkEntry(login_input_container, placeholder_text="Please enter your email", width=200)
-    login_email_entry.grid(row=0, column=0, pady=10)
+    reset_email_entry = ctk.CTkEntry(reset_input_container, placeholder_text="Please enter your email", width=200)
+    reset_email_entry.grid(row=0, column=0, pady=10)
+
+    reset_email_button = ctk.CTkButton(reset_input_container, text="Login", hover_color="light blue", command=None)
+    reset_email_button.grid(row=3, column=0, pady=10)
+
