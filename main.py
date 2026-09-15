@@ -1,9 +1,12 @@
-from ui import login, sign_up, reset_passwrod
+from ui import login
+from ui import sign_up
+from ui import reset_password
 from tkinter import messagebox
 import string
 import customtkinter as ctk
 
-root = ctk.CTK()
+
+root = ctk.CTk()
 root.title("PortalOne")
 ctk.set_appearance_mode("dark")
 ctk.set_default_color_theme("blue")
@@ -25,4 +28,9 @@ def navigate_to(page_name):
     elif page_name == "login":
         active_frame = login.create_login_page(root, navigate_to)
     elif page_name == "reset_password":
-        active_frame = reset_passwrod.create_reset_page(root, navigate_to)
+        active_frame = reset_password.create_reset_page(root, navigate_to)
+
+    active_frame.pack(expand=True)
+
+navigate_to("login")
+root.mainloop()

@@ -1,7 +1,7 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
-from firebase_auth import signup_user
+from .firebase_auth import signup_user
 
 import warnings
 import requests
@@ -23,17 +23,20 @@ requests.Session.request = patched_request
 
 def create_signup_page(parent, router):
 #interface--------------------------------------------------------------------
-    root = ctk.CTk()
-    root.title("PortalOne SignUp")
-    
+    signup_card = ctk.CTkFrame(parent, width=400, height=500)
+    signup_card.grid_propagate(False)
 
-    #global variables-------------------------------------------------------------
+    signup_card.columnconfigure(0, weight=1)
+    signup_card.rowconfigure(0, weight=1)
+
+    signup_input_container = ctk.CTkFrame(signup_card, fg_color="transparent")
+    signup_input_container.grid(row=0, column=0)
+
+#global variables-------------------------------------------------------------
     password = ctk.StringVar()
     min_legnth = 8
 
-    #functions--------------------------------------------------------------------
-
-
+#functions--------------------------------------------------------------------
     def handle_signup():
         email = signup_email_entry.get().strip()
         password = signup_password_entry.get().strip()
@@ -46,7 +49,6 @@ def create_signup_page(parent, router):
             else:
                 messagebox.showerror("Signup failed", result["error"])
         
-
         elif not email or not password:
             messagebox.showerror("Error", "All fields are required to procced")
             return
@@ -56,7 +58,6 @@ def create_signup_page(parent, router):
             label.grid_remove()
         else:
             label.grid()
-
 
     def check_password(*args):
         global password, confirm_password
@@ -91,19 +92,7 @@ def create_signup_page(parent, router):
 
     password.trace_add("write", check_password)
 
-    #panels-----------------------------------------------------------------------
-    signup_card = ctk.CTkFrame(root, width=400, height=500)
-    signup_card.grid(column=0, row=0, sticky="")
-    signup_card.grid_propagate(False)
-
-    signup_card.columnconfigure(0, weight=1)
-    signup_card.rowconfigure(0, weight=1)
-
-    signup_input_container = ctk.CTkFrame(signup_card, fg_color="transparent")
-    signup_input_container.grid(row=0, column=0)
-
-    #signup_input_container-------------------------------------------------------
-
+#signup_input_container-------------------------------------------------------
     signup_email_entry = ctk.CTkEntry(signup_input_container, placeholder_text="Please enter your email", width=200)
     signup_email_entry.grid(row=0, column=0, pady=10)
 
@@ -140,7 +129,7 @@ def create_signup_page(parent, router):
     signup_user_button = ctk.CTkButton(signup_input_container, text="Create Account", hover_color="light blue", command=check_password)
     signup_user_button.grid(row=9, column=0, pady=10)
 
-    login_button = ctk.CTkButton(signup_input_container, text="Already have a account? Log in.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=None)
-    login_button.grid(row=9, column=0, pady=10)
+    login_button = ctk.CTkButton(signup_input_container, text="Already have a account? Log in.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("login"))
+    login_button.grid(row=10, column=0, pady=10)
 
     return signup_card

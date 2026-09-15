@@ -1,14 +1,14 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
-from firebase_auth import login_user
+from .firebase_auth import login_user
 
 
 def create_login_page(parent, router):
 #functions--------------------------------------------------------------------
     def handle_login():
-        email = login_email_entry.get().strip
-        password = login_password_entry.get().strip
+        email = login_email_entry.get().strip()
+        password = login_password_entry.get().strip()
 
         if not email or not password:
             messagebox.showerror("Error", "All fields are required to procced")
@@ -23,7 +23,6 @@ def create_login_page(parent, router):
 
 #panels-----------------------------------------------------------------------
     login_card = ctk.CTkFrame(parent, width=400, height=500)
-    login_card.grid(column=0, row=0, sticky="")
     login_card.grid_propagate(False)
 
     login_card.columnconfigure(0, weight=1)
@@ -46,10 +45,10 @@ def create_login_page(parent, router):
     login_user_button = ctk.CTkButton(login_input_container, text="Login", hover_color="light blue", command=handle_login)
     login_user_button.grid(row=3, column=0, pady=10)
 
-    reset_password_button = ctk.CTkButton(login_input_container, text="Forgot your password? Reset it.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=None)
-    reset_password_button.grid(row=3, column=0, pady=10)
+    reset_password_button = ctk.CTkButton(login_input_container, text="Forgot your password? Reset it.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("reset_password"))
+    reset_password_button.grid(row=4, column=0, pady=10)
 
-    signup_button = ctk.CTkButton(login_input_container, text="Don't have a account? Sign up.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=None)
-    signup_button.grid(row=3, column=0, pady=10)
+    signup_button = ctk.CTkButton(login_input_container, text="Don't have a account? Sign up.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("signup"))
+    signup_button.grid(row=5, column=0, pady=10)
 
     return login_card
