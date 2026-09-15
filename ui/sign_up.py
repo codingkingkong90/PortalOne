@@ -1,6 +1,7 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
+from data.images import eye_icon, eye_off_icon
 from .firebase_auth import signup_user
 
 def create_signup_page(parent, router):
@@ -17,6 +18,7 @@ def create_signup_page(parent, router):
 #global variables-------------------------------------------------------------
     password = ctk.StringVar()
     min_legnth = 8
+    password_visable = False
 
 #functions--------------------------------------------------------------------
     def handle_signup():
@@ -74,15 +76,26 @@ def create_signup_page(parent, router):
 
     password.trace_add("write", check_password)
 
+    def toggle_password():
+        global password_visable
+        if password_visable:
+            signup_password_entry.configure(show="")
+            password_show_button.configure(image=eye_off_icon)
+            password_visable = False
+        else:
+            signup_password_entry.configure(show="")
+            password_show_button.configure(image=eye_off_icon)
+            password_visable = True
+
 #signup_input_container-------------------------------------------------------
-    signup_email_entry = ctk.CTkEntry(signup_input_container, placeholder_text="Please enter your email", width=200)
+    signup_email_entry = ctk.CTkEntry(signup_input_container, placeholder_text="Please enter your email", width=280)
     signup_email_entry.grid(row=0, column=0, pady=10)
 
-    signup_password_entry = ctk.CTkEntry(signup_input_container, show="*", placeholder_text="Please enter a password", textvariable=password, width=200)
-    signup_password_entry.grid(row=1, column=0, pady=10)
+    signup_password_entry = ctk.CTkEntry(signup_input_container, show="*", placeholder_text="Please enter a password", textvariable=password, width=280)
+    signup_password_entry.grid(row=1, column=0, padx=5)
 
-    confirm_password_entry = ctk.CTkEntry(signup_input_container, show="*", placeholder_text="Please re-enter your password", width=200)
-    confirm_password_entry.grid(row=2, column=0, pady=10)
+    confirm_password_entry = ctk.CTkEntry(signup_input_container, show="*", placeholder_text="Please re-enter your password", width=280)
+    confirm_password_entry.grid(row=2, column=0, padx=(10, 5), pady=10)
 
     upper_label = ctk.CTkLabel(signup_input_container, text="Your password must have atleast one capital letter",
                             font=("Airial", 10), text_color=("red"))
@@ -113,5 +126,11 @@ def create_signup_page(parent, router):
 
     login_button = ctk.CTkButton(signup_input_container, text="Already have a account? Log in.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("login"))
     login_button.grid(row=10, column=0, pady=10)
+
+    password_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=toggle_password)
+    password_show_button.grid(row=1, column=1)
+
+    confirm_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=None)
+    confirm_show_button.grid(row=2, column=1)
 
     return signup_card
