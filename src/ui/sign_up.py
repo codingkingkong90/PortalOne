@@ -1,7 +1,7 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
-from data.images import eye_icon, eye_off_icon
+from src.data.images import eye_icon, eye_off_icon
 from .firebase_auth import signup_user
 
 def create_signup_page(parent, router):
@@ -19,6 +19,7 @@ def create_signup_page(parent, router):
     password = ctk.StringVar()
     min_legnth = 8
     password_visable = False
+    confirm_password_visible = False
 
 #functions--------------------------------------------------------------------
     def handle_signup():
@@ -29,6 +30,7 @@ def create_signup_page(parent, router):
             result = signup_user(email, password)
             
             if result["success"]:
+                lambda: router("home_page")
                 messagebox.showinfo("Account Created", "Account Created succesfully")
             else:
                 messagebox.showerror("Signup failed", result["error"])
@@ -44,8 +46,6 @@ def create_signup_page(parent, router):
             label.grid()
 
     def check_password(*args):
-        global password, confirm_password
-
         password = signup_password_entry.get().strip()
         confirm_password = confirm_password_entry.get().strip()
 
@@ -77,15 +77,26 @@ def create_signup_page(parent, router):
     password.trace_add("write", check_password)
 
     def toggle_password():
-        global password_visable
+        nonlocal password_visable
         if password_visable:
-            signup_password_entry.configure(show="")
-            password_show_button.configure(image=eye_off_icon)
+            signup_password_entry.configure(show="*")
+            password_show_button.configure(image=eye_icon)
             password_visable = False
         else:
             signup_password_entry.configure(show="")
             password_show_button.configure(image=eye_off_icon)
             password_visable = True
+
+    def toggle_confirm_password():
+        nonlocal confirm_password_visible
+        if confirm_password_visible:
+            confirm_password_entry.configure(show="*")
+            confirm_show_button.configure(image=eye_icon)
+            confirm_password_visible = False
+        else:
+            confirm_password_entry.configure(show="")
+            confirm_show_button.configure(image=eye_off_icon)
+            confirm_password_visible = True
 
 #signup_input_container-------------------------------------------------------
     signup_email_entry = ctk.CTkEntry(signup_input_container, placeholder_text="Please enter your email", width=280)
@@ -130,7 +141,7 @@ def create_signup_page(parent, router):
     password_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=toggle_password)
     password_show_button.grid(row=1, column=1)
 
-    confirm_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=None)
+    confirm_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=toggle_confirm_password)
     confirm_show_button.grid(row=2, column=1)
 
     return signup_card

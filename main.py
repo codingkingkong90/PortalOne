@@ -1,6 +1,7 @@
-from ui import login
-from ui import sign_up
-from ui import reset_password
+from src.ui import login
+from src.ui import sign_up
+from src.ui import reset_password
+from src.ui import home_page
 from tkinter import messagebox
 import string
 import customtkinter as ctk
@@ -29,6 +30,8 @@ def navigate_to(page_name):
         active_frame = login.create_login_page(root, navigate_to)
     elif page_name == "reset_password":
         active_frame = reset_password.create_reset_page(root, navigate_to)
+    elif active_frame == "home_page":
+        active_frame = home_page.create_home_page(root, navigate_to)
 
     active_frame.pack(expand=True)
 
