@@ -1,7 +1,7 @@
-from src.ui import login
-from src.ui import sign_up
-from src.ui import reset_password
-from src.ui import home_page
+from app import login
+from app import sign_up
+from app import reset_password
+from app import home_page
 from tkinter import messagebox
 import string
 import customtkinter as ctk

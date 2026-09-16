@@ -1,8 +1,8 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
-from src.data.images import eye_icon, eye_off_icon
-from .firebase_auth import signup_user
+from data.images import eye_icon, eye_off_icon
+from ..services.firebase_auth import signup_user
 
 def create_signup_page(parent, router):
 #interface--------------------------------------------------------------------
@@ -30,8 +30,8 @@ def create_signup_page(parent, router):
             result = signup_user(email, password)
             
             if result["success"]:
-                lambda: router("home_page")
                 messagebox.showinfo("Account Created", "Account Created succesfully")
+                lambda: router("home_page")
             else:
                 messagebox.showerror("Signup failed", result["error"])
         

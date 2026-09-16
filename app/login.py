@@ -1,10 +1,13 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
-from .firebase_auth import login_user
+from ..services.firebase_auth import login_user
+from data.images import eye_icon, eye_off_icon
 
 
 def create_login_page(parent, router):
+#global variables-------------------------------------------------------------
+    password_visible = False
 #functions--------------------------------------------------------------------
     def handle_login():
         email = login_email_entry.get().strip()
@@ -18,8 +21,21 @@ def create_login_page(parent, router):
 
         if result["success"]:
             messagebox.showinfo("Logged in", "Logged in succesfully")
+            lambda: router("home_page")
         else:
             messagebox.showerror("Login failed", result["error"])
+
+    def toggle_password():
+        nonlocal password_visible
+
+        if password_visible:
+            login_password_entry.configure(show="*")
+            password_show_button.configure(image=eye_icon)
+            password_visible = False
+        else:
+            login_password_entry.configure(show="")
+            password_show_button.configure(image=eye_off_icon)
+            password_visible = True
 
 #panels-----------------------------------------------------------------------
     login_card = ctk.CTkFrame(parent, width=400, height=500)
@@ -47,6 +63,9 @@ def create_login_page(parent, router):
 
     reset_password_button = ctk.CTkButton(login_input_container, text="Forgot your password? Reset it.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("reset_password"))
     reset_password_button.grid(row=4, column=0, pady=10)
+
+    password_show_button = ctk.CTkButton(login_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=toggle_password)
+    password_show_button.grid(row=1, column=1)
 
     signup_button = ctk.CTkButton(login_input_container, text="Don't have a account? Sign up.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("signup"))
     signup_button.grid(row=5, column=0, pady=10)
