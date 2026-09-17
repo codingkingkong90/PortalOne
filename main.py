@@ -6,7 +6,6 @@ from tkinter import messagebox
 import string
 import customtkinter as ctk
 
-
 root = ctk.CTk()
 root.title("PortalOne")
 ctk.set_appearance_mode("dark")
@@ -30,10 +29,13 @@ def navigate_to(page_name):
         active_frame = login.create_login_page(root, navigate_to)
     elif page_name == "reset_password":
         active_frame = reset_password.create_reset_page(root, navigate_to)
-    elif active_frame == "home_page":
+    elif page_name == "home_page":
         active_frame = home_page.create_home_page(root, navigate_to)
+    elif page_name == "create_group":
+        active_frame = create_group.create_group_page(root, navigate_to)
 
-    active_frame.pack(expand=True)
+    if active_frame is not None:
+        active_frame.pack(expand=True, fill="both")
 
 navigate_to("login")
 root.mainloop()

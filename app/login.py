@@ -21,7 +21,7 @@ def create_login_page(parent, router):
 
         if result["success"]:
             messagebox.showinfo("Logged in", "Logged in succesfully")
-            lambda: router("home_page")
+            router("home_page")
         else:
             messagebox.showerror("Login failed", result["error"])
 

@@ -3,6 +3,7 @@ import string
 import customtkinter as ctk
 from data.images import eye_icon, eye_off_icon
 from services.firebase_auth import signup_user
+from services.firestore import create_user_documents
 
 def create_signup_page(parent, router):
 #interface--------------------------------------------------------------------
@@ -23,6 +24,7 @@ def create_signup_page(parent, router):
 
 #functions--------------------------------------------------------------------
     def handle_signup():
+        name = signup_name_entry.get().strip()
         email = signup_email_entry.get().strip()
         password = signup_password_entry.get().strip()
 
@@ -30,8 +32,21 @@ def create_signup_page(parent, router):
             result = signup_user(email, password)
             
             if result["success"]:
-                messagebox.showinfo("Account Created", "Account Created succesfully")
-                lambda: router("home_page")
+                user_id = result["user"]["localId"]
+                id_token = result["user"]["idToken"]
+                firestore_results =create_user_documents (
+                    user_id,
+                    name,
+                    email,
+                    id_token
+                )
+
+                print("Firestore:", firestore_results.status_code)
+
+                messagebox.showinfo(
+                    "Account Created", 
+                    "Account Created succesfully")
+                router("home_page")
             else:
                 messagebox.showerror("Signup failed", result["error"])
         
@@ -99,49 +114,52 @@ def create_signup_page(parent, router):
             confirm_password_visible = True
 
 #signup_input_container-------------------------------------------------------
+    signup_name_entry = ctk.CTkEntry(signup_input_container, placeholder_text="Please enter your name", width=280)
+    signup_name_entry.grid(row=0, column=0, pady=10)
+
     signup_email_entry = ctk.CTkEntry(signup_input_container, placeholder_text="Please enter your email", width=280)
-    signup_email_entry.grid(row=0, column=0, pady=10)
+    signup_email_entry.grid(row=1, column=0, pady=10)
 
     signup_password_entry = ctk.CTkEntry(signup_input_container, show="*", placeholder_text="Please enter a password", textvariable=password, width=280)
-    signup_password_entry.grid(row=1, column=0, padx=5)
+    signup_password_entry.grid(row=2, column=0, padx=5)
 
     confirm_password_entry = ctk.CTkEntry(signup_input_container, show="*", placeholder_text="Please re-enter your password", width=280)
-    confirm_password_entry.grid(row=2, column=0, padx=(10, 5), pady=10)
+    confirm_password_entry.grid(row=3, column=0, padx=(10, 5), pady=10)
 
     upper_label = ctk.CTkLabel(signup_input_container, text="Your password must have atleast one capital letter",
                             font=("Airial", 10), text_color=("red"))
-    upper_label.grid(row=3, column=0, pady=5)
+    upper_label.grid(row=4, column=0, pady=5)
 
     lower_label = ctk.CTkLabel(signup_input_container, text="Your password must have atleast one lowercase letter",
                             font=("Airial", 10), text_color=("red"))
-    lower_label.grid(row=4, column=0, pady=5)
+    lower_label.grid(row=5, column=0, pady=5)
 
     digit_label = ctk.CTkLabel(signup_input_container, text="Your password must have atleast one digit",
                             font=("Airial", 10), text_color=("red"))
-    digit_label.grid(row=5, column=0, pady=5)
+    digit_label.grid(row=6, column=0, pady=5)
 
     special_label = ctk.CTkLabel(signup_input_container, text="Your password must have atleast one special character",
                             font=("Airial", 10), text_color=("red"))
-    special_label.grid(row=6, column=0, pady=5)
+    special_label.grid(row=7, column=0, pady=5)
 
     legnth_label = ctk.CTkLabel(signup_input_container, text="Your password must be atleast 8 characters",
                             font=("Airial", 10), text_color=("red"))
-    legnth_label.grid(row=7, column=0, pady=5)
+    legnth_label.grid(row=8, column=0, pady=5)
 
     match_label = ctk.CTkLabel(signup_input_container, text="Your password must match",
                             font=("Airial", 10), text_color=("red"))
-    match_label.grid(row=8, column=0, pady=5)
+    match_label.grid(row=9, column=0, pady=5)
 
     signup_user_button = ctk.CTkButton(signup_input_container, text="Create Account", hover_color="light blue", command=check_password)
-    signup_user_button.grid(row=9, column=0, pady=10)
+    signup_user_button.grid(row=10, column=0, pady=10)
 
     login_button = ctk.CTkButton(signup_input_container, text="Already have a account? Log in.", fg_color="transparent",  hover_color=("gray85", "gray20"), width=50, command=lambda: router("login"))
-    login_button.grid(row=10, column=0, pady=10)
+    login_button.grid(row=11, column=0, pady=10)
 
     password_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=toggle_password)
-    password_show_button.grid(row=1, column=1)
+    password_show_button.grid(row=2, column=1)
 
     confirm_show_button = ctk.CTkButton(signup_input_container, text="", image=eye_icon, width=30, fg_color="transparent", command=toggle_confirm_password)
-    confirm_show_button.grid(row=2, column=1)
+    confirm_show_button.grid(row=3, column=1)
 
     return signup_card
