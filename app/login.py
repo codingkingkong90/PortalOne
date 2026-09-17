@@ -1,7 +1,7 @@
 from tkinter import messagebox
 import string
 import customtkinter as ctk
-from ..services.firebase_auth import login_user
+from services.firebase_auth import login_user
 from data.images import eye_icon, eye_off_icon
 
 

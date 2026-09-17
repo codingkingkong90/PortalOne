@@ -2,7 +2,7 @@ import pyrebase
 from dotenv import load_dotenv
 
 #firebase config--------------------------------------------------------------
-config = {
+FIREBASE_CONFIG = {
   "apiKey": "AIzaSyCLj3LOswV0j2ItWzkF4_iVAJ_p_tw3Bro",
   "authDomain": "portalone-f78e5.firebaseapp.com",
   "projectId": "portalone-f78e5",
@@ -14,5 +14,5 @@ config = {
 }
 
 #initialise-------------------------------------------------------------------
-firebase = pyrebase.initialize_app(config)
+firebase = pyrebase.initialize_app(FIREBASE_CONFIG)
 auth = firebase.auth()
