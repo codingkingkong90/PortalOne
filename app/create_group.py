@@ -25,7 +25,7 @@ def create_group_page(parent, router):
     group_description_entry = ctk.CTkEntry(create_input_container, placeholder_text="Please add a group description", width=280)
     group_description_entry.grid(row=0, column=0, pady=10)
 
-    group_logo_entry
+    group_logo_entry = ctk.CTkEntry
 
     group_create_button = ctk.CTkButton(create_input_container, text="Create Group", hover_color="light blue", command=None)
     group_create_button.grid(row=5, column=0, pady=10)
